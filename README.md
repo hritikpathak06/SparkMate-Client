@@ -2,7 +2,7 @@
 
 Welcome to **SparkMate**, a modern dating app designed to help you find meaningful connections! This template provides a minimal setup to get React working in Vite with Hot Module Replacement (HMR) and ESLint integration.
 
-![App Logo](public/app-logo.webp)
+![App Logo](public/app.png)
 
 ## Features
 
