@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
-import { lazy, useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import axios from "axios";
 import { SERVER_BASE_API } from "./config/server_url";
 import { setUser } from "./store/slices/authSlice";
@@ -54,33 +54,41 @@ const App = () => {
   return (
     <>
       {/* <SwipeCard/> */}
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/login"
-          element={isAuth ? <Navigate to="/profile" /> : <LoginPage />}
-        />
-        <Route
-          path="/register"
-          element={isAuth ? <Navigate to="/profile" /> : <RegisterPage />}
-        />
-        <Route
-          path="/profile"
-          element={!isAuth ? <Navigate to="/login" /> : <ProfilePage />}
-        />
-        <Route
-          path="/dashboard/chat/:id"
-          element={!isAuth ? <Navigate to="/login" /> : <ChatPage />}
-        />
-        <Route
-          path="/update-profile"
-          element={!isAuth ? <Navigate to="/login" /> : <UpdateProfilePage />}
-        />
-        <Route
-          path="/dashboard"
-          element={!isAuth ? <Navigate to="/login" /> : <DashboardPage />}
-        />
-      </Routes>
+      <Suspense
+        fallback={
+          <div className="h-screen w-full flex items-center justify-center bg-white">
+            <LoaderComponent />
+          </div>
+        }
+      >
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/login"
+            element={isAuth ? <Navigate to="/profile" /> : <LoginPage />}
+          />
+          <Route
+            path="/register"
+            element={isAuth ? <Navigate to="/profile" /> : <RegisterPage />}
+          />
+          <Route
+            path="/profile"
+            element={!isAuth ? <Navigate to="/login" /> : <ProfilePage />}
+          />
+          <Route
+            path="/dashboard/chat/:id"
+            element={!isAuth ? <Navigate to="/login" /> : <ChatPage />}
+          />
+          <Route
+            path="/update-profile"
+            element={!isAuth ? <Navigate to="/login" /> : <UpdateProfilePage />}
+          />
+          <Route
+            path="/dashboard"
+            element={!isAuth ? <Navigate to="/login" /> : <DashboardPage />}
+          />
+        </Routes>
+      </Suspense>
     </>
   );
 };

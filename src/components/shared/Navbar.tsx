@@ -8,19 +8,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import { SERVER_BASE_API } from "../../config/server_url";
 import { setUser } from "../../store/slices/authSlice";
+import { Avatar } from "@mui/material";
+import { AiFillDashboard } from "react-icons/ai";
 
 const Navbar = () => {
   const user = useSelector((state: any) => state.auth.userData);
   const [dropDown, setDropDown] = useState<boolean>(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState<boolean>(false);
-  const dropDownRef = useRef<any>(null);
+  const dropDownRef = useRef<HTMLDivElement>(null);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleLogout = async (e: any) => {
     e.preventDefault();
     try {
-      const { data } = await axios.get(`${SERVER_BASE_API}/api/v1/auth/logout`);
+      const { data } = await axios.get(
+        `${SERVER_BASE_API}/api/v1/auth/logout`,
+        { withCredentials: true }
+      );
       toast.success(data.msg);
       dispatch(setUser(null));
       navigate("/login");
@@ -30,11 +35,15 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const handleClickOutside = (event: any) => {
-      if (dropDownRef?.current && !dropDownRef?.current(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropDownRef.current &&
+        !dropDownRef.current.contains(event.target as Node)
+      ) {
         setDropDown(false);
       }
     };
+
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
@@ -64,11 +73,17 @@ const Navbar = () => {
                       onClick={() => setDropDown(!dropDown)}
                       className=" flex items-center space-x-2 text-white focus:outline-none"
                     >
-                      <img
-                        src={user?.image || "/public/logo.png"}
-                        alt="user-image"
-                        className=" h-10 w-10 object-cover border-5 border-white rounded-full"
-                      />
+                      {user?.image ? (
+                        <img
+                          src={user?.image}
+                          alt="user-image"
+                          className=" h-10 w-10 object-cover border-5 border-white rounded-full"
+                        />
+                      ) : (
+                        <>
+                          <Avatar />
+                        </>
+                      )}
                       <span className=" text-white font-medium">
                         {user.name}
                       </span>
@@ -76,22 +91,39 @@ const Navbar = () => {
 
                     {dropDown && (
                       <>
-                        <div className=" absolute right-0 mt-2 bg-white rounded-md shadow-lg flex flex-col gap-5 p-4 items-center text-gray-500 w-48 z-10 ">
+                        <div
+                          className=" absolute right-0 mt-2 bg-white rounded-md shadow-lg flex flex-col gap-5 p-4 items-start text-gray-500 w-48 z-10 "
+                          ref={dropDownRef}
+                        >
+                          <Link
+                            to={"/dashboard"}
+                            className=" flex items-center gap-5 justify-center"
+                          >
+                            <AiFillDashboard
+                              style={{
+                                width: "20px",
+                                height: "20px",
+                                color: "gray",
+                              }}
+                            />
+                            Profile
+                          </Link>
                           <Link
                             to={"/profile"}
-                            className=" flex items-center justify-center"
+                            className=" flex items-center gap-5 justify-center"
                           >
                             <FiUser
                               style={{
-                                width: "15px",
-                                height: "15px",
+                                width: "20px",
+                                height: "20px",
                                 color: "gray",
                               }}
                             />
                             Profile
                           </Link>
                           <button
-                            className=" w-full text-left px-4 text-sm text-gray-700 hover:bg-gray-100 flex items-center justify-center"
+                            className=" flex items-center gap-5 justify-center"
+                            // className=" w-full text-left px-4 text-sm text-gray-700 hover:bg-gray-100 flex items-start justify-center"
                             onClick={handleLogout}
                           >
                             <FiLogOut
@@ -148,10 +180,23 @@ const Navbar = () => {
           <div className=" absolute right-0 bg-pink-600 h-full w-[250px] z-10">
             {user ? (
               <>
-                <div className="   shadow-lg flex flex-col gap-5 p-4 items-center w-full text-white">
+                <div className="   shadow-lg flex flex-col gap-5 p-4 items-start w-full text-white">
+                  <Link
+                    to={"/dashboard"}
+                    className=" flex items-center gap-5 justify-center"
+                  >
+                    <AiFillDashboard
+                      style={{
+                        width: "20px",
+                        height: "20px",
+                        color: "white",
+                      }}
+                    />
+                    Dashboard
+                  </Link>
                   <Link
                     to={"/profile"}
-                    className=" flex items-center justify-center"
+                    className=" flex items-center gap-5 justify-center"
                   >
                     <FiUser
                       style={{
@@ -163,7 +208,7 @@ const Navbar = () => {
                     Profile
                   </Link>
                   <button
-                    className=" w-full text-left px-4 text-sm text-white hover:bg-gray-100 flex items-center justify-center"
+                    className=" flex items-center gap-5 justify-center"
                     onClick={handleLogout}
                   >
                     <FiLogOut

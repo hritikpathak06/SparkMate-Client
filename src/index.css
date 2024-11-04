@@ -9,14 +9,14 @@
 }
 
 .profile_image {
-  border-radius: 50%;
-  height: 100%;
-  width: 100%;
+  border-radius: 30% !important;
+  height: 100% !important;
+  width: 100% !important;
   object-fit: cover;
 }
 
 .profile_image_container {
-  border-radius: 50%;
-  height: 70%;
-  width: 75%;
+  border-radius: 50% !important;
+  height: 70% !important;
+  width: 75% !important;
 }
