@@ -50,7 +50,10 @@ const Navbar = () => {
 
   return (
     <>
-      <header className="bg-gradient-to-t from-pink-500 to-pink-800 shadow-lg">
+      <header
+        className="
+      bg-gradient-to-t from-pink-500 to-pink-800 shadow-lg"
+      >
         <div className="max-w-7xl   mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div className=" flex items-center">
@@ -106,7 +109,7 @@ const Navbar = () => {
                                 color: "gray",
                               }}
                             />
-                            Profile
+                            Dashboard
                           </Link>
                           <Link
                             to={"/profile"}
