@@ -25,10 +25,10 @@ const UpdateProfile = () => {
       const fileReader = new FileReader();
 
       fileReader.onload = (e: any) => {
-        setImage(e.target.result); // Set the preview URL
+        setImage(e.target.result);
       };
 
-      fileReader.readAsDataURL(file); // Convert image to base64 string
+      fileReader.readAsDataURL(file);
     }
   };
 
@@ -43,7 +43,7 @@ const UpdateProfile = () => {
       gender,
       genderPreference,
       bio,
-      image, // Ensure this has the base64 string
+      image,
     };
 
     console.log("Profile Data:", profileData);
