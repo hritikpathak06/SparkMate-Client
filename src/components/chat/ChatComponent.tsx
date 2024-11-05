@@ -4,6 +4,7 @@ import MessageInput from "./MessageInput";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { SERVER_BASE_API } from "../../config/server_url";
+import VideoCall from "./VideoCall";
 
 const ChatComponent = ({ messages, setMessages }: any) => {
   const user = useSelector((state: any) => state.auth.userData);
@@ -32,14 +33,22 @@ const ChatComponent = ({ messages, setMessages }: any) => {
 
   return (
     <div className="bg-white w-full md:h-[85vh] h-[87vh] max-h-[95vh] flex flex-col">
-      <div className="flex items-center mb-4 bg-slate-300 shadow-lg p-3">
-        <img
-          src={profile?.image || "/public/logo.png"}
-          alt=""
-          className="h-12 w-12 rounded-full"
-        />
+      <div className="flex items-center justify-between mb-4 bg-slate-300 shadow-lg p-3">
+        <div className=" flex items-center">
+          <img
+            src={profile?.image || "/public/logo.png"}
+            alt=""
+            className="h-12 w-12 rounded-full"
+          />
+          <h2 className="text-xl font-semibold text-gray-800 ml-4">
+            {profile?.name}
+          </h2>
+        </div>
+
         <h2 className="text-xl font-semibold text-gray-800 ml-4">
-          {profile?.name}
+          {/* {profile?.name} */}
+          <VideoCall
+          />
         </h2>
       </div>
 
