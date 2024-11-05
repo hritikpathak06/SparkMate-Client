@@ -1,22 +1,22 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
 import { SERVER_BASE_API } from "../config/server_url";
 import { useSelector } from "react-redux";
+import { Avatar } from "@mui/material";
 
 const UpdateProfile = () => {
-  const navigate = useNavigate();
   const user = useSelector((state: any) => state.auth.userData);
   const [name, setName] = useState<string>(user?.name);
   const [email, setEmail] = useState<string>(user?.email);
   const [age, setAge] = useState<number>(user?.age);
   const [gender, setGender] = useState<string>(user?.gender);
-  const [image, setImage] = useState<any>(null);
+  const [image, setImage] = useState<any>(user?.image);
   const [genderPreference, setGenderPreference] = useState<string>(
     user?.genderPreference
   );
   const [bio, setBio] = useState<string>(user?.bio);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleImageChange = (e: any) => {
     const file = e.target.files[0];
@@ -32,7 +32,7 @@ const UpdateProfile = () => {
     }
   };
 
-  console.log("iamge url==>> ",image)
+  console.log("iamge url==>> ", image);
 
   const handleUpdateProfile = async (e: any) => {
     e.preventDefault();
@@ -46,21 +46,25 @@ const UpdateProfile = () => {
       image, // Ensure this has the base64 string
     };
 
-    console.log("Profile Data:", profileData); 
+    console.log("Profile Data:", profileData);
     try {
+      setLoading(true);
       const { data } = await axios.put(
         `${SERVER_BASE_API}/api/v1/user/update-profile`,
-       profileData,
+        profileData,
         {
           withCredentials: true,
         }
       );
       toast.success(data.msg);
-      navigate("/profile");
+      setLoading(false);
+      // navigate("/profile");
+      window.location.href = "/dashboard";
       console.log({ name, email, age, gender, genderPreference });
     } catch (error: any) {
       console.log(error.response.data.msg);
       toast.error(error.response.data.msg);
+      setLoading(false);
     }
   };
 
@@ -68,11 +72,15 @@ const UpdateProfile = () => {
     <>
       <div className=" bg-slate-200 h-screen w-full flex">
         <div className="bg-red-400 w-1/2 h-full flex items-center justify-center">
-          <img
-            src={image ? image : "/logo.png"}
-            alt=""
-            className=" w-[70%] h-[70%] rounded-full border-5 "
-          />
+          {image ? (
+            <img
+              src={image || "/logo.png"}
+              alt=""
+              className=" w-[70%] h-[70%] rounded-full border-5 "
+            />
+          ) : (
+            <Avatar />
+          )}
         </div>
         <div className="w-1/2 h-full">
           <div className=" h-full w-full  flex flex-col items-center justify-center">
@@ -173,8 +181,10 @@ const UpdateProfile = () => {
                       Upload Your Profile Pic
                     </label>
 
-                    <input type="file" accept="image/*"
-                    onChange={handleImageChange}
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleImageChange}
                     />
                   </div>
                 </div>
@@ -192,8 +202,9 @@ const UpdateProfile = () => {
                   <button
                     className=" p-2 bg-black hover:bg-slate-800 text-white w-full flex items-center justify-center gap-4"
                     type="submit"
+                    disabled={loading}
                   >
-                    Register
+                    {loading ? "Updating....." : "Update"}
                   </button>
                 </div>
               </form>

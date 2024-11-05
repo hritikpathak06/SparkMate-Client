@@ -15,14 +15,19 @@ const VideoCall = () => {
 
   const [isCalling, setIsCalling] = useState(false);
   const [isCallConnected, setIsCallConnected] = useState(false);
-  const [incomingCall, setIncomingCall] = useState(false);
+  const [incomingCall, setIncomingCall] = useState<any>(false);
   const [error, setError] = useState<string>("");
-  console.log("is connected==>> ",isCallConnected)
+
+  console.log(isCallConnected);
 
   const peerConnectionConfig = {
     iceServers: [
       { urls: "stun:stun.l.google.com:19302" },
-      { urls: "turn:173.194.72.127:19305?transport=udp", username: "user", credential: "password" }
+      {
+        urls: "turn:173.194.72.127:19305?transport=udp",
+        username: "user",
+        credential: "password",
+      },
     ],
     iceCandidatePoolSize: 10,
   };
@@ -69,15 +74,26 @@ const VideoCall = () => {
     };
   }, [socket, receiverId, user._id]);
 
-  const handleOffer = async (data: { offer: RTCSessionDescriptionInit; senderId: string }) => {
+  const handleOffer = async (data: {
+    offer: RTCSessionDescriptionInit;
+    senderId: string;
+  }) => {
     setIncomingCall(true);
-    socket.emit("incomingCallNotification", { receiverId: user._id, senderId: data.senderId });
+    socket.emit("incomingCallNotification", {
+      receiverId: user._id,
+      senderId: data.senderId,
+    });
   };
 
   const handleAnswer = async (answer: RTCSessionDescriptionInit) => {
     try {
-      if (peerConnectionRef.current && !peerConnectionRef.current.currentRemoteDescription) {
-        await peerConnectionRef.current.setRemoteDescription(new RTCSessionDescription(answer));
+      if (
+        peerConnectionRef.current &&
+        !peerConnectionRef.current.currentRemoteDescription
+      ) {
+        await peerConnectionRef.current.setRemoteDescription(
+          new RTCSessionDescription(answer)
+        );
         setIsCallConnected(true);
       }
     } catch (err) {
@@ -88,8 +104,13 @@ const VideoCall = () => {
 
   const handleCandidate = async (candidate: RTCIceCandidateInit) => {
     try {
-      if (peerConnectionRef.current && peerConnectionRef.current.remoteDescription) {
-        await peerConnectionRef.current.addIceCandidate(new RTCIceCandidate(candidate));
+      if (
+        peerConnectionRef.current &&
+        peerConnectionRef.current.remoteDescription
+      ) {
+        await peerConnectionRef.current.addIceCandidate(
+          new RTCIceCandidate(candidate)
+        );
       }
     } catch (err) {
       console.error("Error handling ICE candidate:", err);
@@ -142,7 +163,9 @@ const VideoCall = () => {
       }
 
       const peerConnection = createPeerConnection();
-      stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+      stream
+        .getTracks()
+        .forEach((track) => peerConnection.addTrack(track, stream));
 
       const offer = await peerConnection.createOffer();
       await peerConnection.setLocalDescription(offer);
@@ -154,7 +177,9 @@ const VideoCall = () => {
       });
     } catch (err) {
       console.error("Error starting call:", err);
-      setError("Failed to start call. Please check your camera and microphone permissions.");
+      setError(
+        "Failed to start call. Please check your camera and microphone permissions."
+      );
       cleanup();
     }
   };
@@ -173,7 +198,9 @@ const VideoCall = () => {
         localVideoRef.current.srcObject = stream;
       }
 
-      stream.getTracks().forEach((track) => peerConnection.addTrack(track, stream));
+      stream
+        .getTracks()
+        .forEach((track) => peerConnection.addTrack(track, stream));
     } catch (err) {
       console.error("Error accepting call:", err);
       setError("Failed to accept call.");
@@ -193,40 +220,68 @@ const VideoCall = () => {
 
   return (
     <div className="flex flex-col items-center gap-4 p-4">
-      {error && <div className="text-red-500 bg-red-100 p-2 rounded">{error}</div>}
+      {error && (
+        <div className="text-red-500 bg-red-100 p-2 rounded">{error}</div>
+      )}
 
-      <div className="flex gap-4 w-full">
-        <div className="w-1/2 relative">
-          <video ref={localVideoRef} autoPlay playsInline muted className="w-full h-full object-cover rounded-lg" />
-          <div className="absolute bottom-2 left-2">Local Video</div>
+      <div className="flex gap-4 w-full md:flex-row flex-col">
+        <div className="md:w-1/2 w-full relative">
+          <video
+            ref={localVideoRef}
+            autoPlay
+            playsInline
+            muted
+            className="w-full h-full object-cover rounded-lg"
+          />
+          {/* <div className="absolute bottom-2 left-2">Local Video</div> */}
         </div>
 
-        <div className="w-1/2 relative">
-          <video ref={remoteVideoRef} autoPlay playsInline className="w-full h-full object-cover rounded-lg" />
-          <div className="absolute bottom-2 left-2">Remote Video</div>
+        <div className="md:w-1/2 w-full relative">
+          <video
+            ref={remoteVideoRef}
+            autoPlay
+            playsInline
+            className="w-full h-full object-cover rounded-lg"
+          />
+          {/* <div className="absolute bottom-2 left-2">Remote Video</div> */}
         </div>
       </div>
 
+      {incomingCall && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded shadow-lg text-center">
+            <p className="mb-4">Incoming Call...</p>
+            <button
+              onClick={acceptCall}
+              className="bg-blue-500 text-white px-4 py-2 rounded mr-2 hover:bg-blue-600"
+            >
+              Accept
+            </button>
+            <button
+              onClick={rejectCall}
+              className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+            >
+              Reject
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="flex gap-4">
         {!isCalling && !incomingCall && (
-          <button onClick={startCall} className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+          <button
+            onClick={startCall}
+            className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+          >
             Start Call
           </button>
         )}
 
-        {incomingCall && (
-          <>
-            <button onClick={acceptCall} className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
-              Accept Call
-            </button>
-            <button onClick={rejectCall} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
-              Reject Call
-            </button>
-          </>
-        )}
-
         {isCalling && (
-          <button onClick={endCall} className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
+          <button
+            onClick={endCall}
+            className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
+          >
             End Call
           </button>
         )}

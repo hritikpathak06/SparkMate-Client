@@ -5,10 +5,14 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { SERVER_BASE_API } from "../../config/server_url";
 import VideoCall from "./VideoCall";
+import { FcVideoCall } from "react-icons/fc";
+import Modal from "../shared/Modal";
 
 const ChatComponent = ({ messages, setMessages }: any) => {
   const user = useSelector((state: any) => state.auth.userData);
   const lastMessageRef: any = useRef(null);
+
+  const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
 
   const [profile, setProfile] = useState<any>(null);
   const { id } = useParams();
@@ -45,11 +49,21 @@ const ChatComponent = ({ messages, setMessages }: any) => {
           </h2>
         </div>
 
-        <h2 className="text-xl font-semibold text-gray-800 ml-4">
-          {/* {profile?.name} */}
-          <VideoCall
-          />
-        </h2>
+        <button
+          className=" bg-black text-white rounded-md p-4 flex items-center justify-center gap-3"
+          onClick={() => setIsModelOpen(true)}
+        >
+          <FcVideoCall className="h-6 w-6 text-red-500" />
+          Video Room
+        </button>
+
+        <Modal
+          isOpen={isModalOpen}
+          title="Start Your Call"
+          onClose={() => setIsModelOpen(false)}
+        >
+          <VideoCall />
+        </Modal>
       </div>
 
       <div className="flex-grow overflow-y-auto mb-4 bg-white rounded-lg scrollbar-thin scrollbar-thumb-pink-300 scrollbar-track-gray-100 p-4">

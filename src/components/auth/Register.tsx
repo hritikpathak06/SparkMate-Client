@@ -13,10 +13,12 @@ const Register = () => {
   const [gender, setGender] = useState<string>("");
   const [genderPreference, setGenderPreference] = useState<string>("");
   const [bio, setBio] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleRegister = async (e: any) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const { data } = await axios.post(
         `${SERVER_BASE_API}/api/v1/auth/register`,
         {
@@ -30,11 +32,13 @@ const Register = () => {
         }
       );
       toast.success(data.msg);
+      setLoading(false);
       navigate("/login");
       console.log({ name, email, password, age, gender, genderPreference });
     } catch (error: any) {
       console.log(error.response.data.msg);
       toast.error(error.response.data.msg);
+      setLoading(false);
     }
   };
 
@@ -155,8 +159,9 @@ const Register = () => {
               <button
                 className=" p-2 bg-black hover:bg-slate-800 text-white w-full flex items-center justify-center gap-4"
                 type="submit"
+                disabled={loading}
               >
-                Register
+                {loading ? "Please wait.." : " Register"}
               </button>
             </div>
           </form>

@@ -12,10 +12,12 @@ const Login = () => {
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const dispatch = useDispatch();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleLogin = async (e: any) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const { data } = await axios.post(
         `${SERVER_BASE_API}/api/v1/auth/login`,
         {
@@ -29,11 +31,13 @@ const Login = () => {
 
       toast.success(data.msg);
       dispatch(setUser(data.user));
+      setLoading(false);
       // initializeSocket(data.user._id)
       navigate("/");
     } catch (error: any) {
       console.log(error.response.data.msg);
       toast.error(error.response.data.msg);
+      setLoading(false);
     }
   };
 
@@ -81,8 +85,9 @@ const Login = () => {
               <button
                 className=" p-2 bg-black hover:bg-slate-800 text-white w-full flex items-center justify-center gap-4"
                 type="submit"
+                disabled={loading}
               >
-                Login
+                {loading ? "Please wait...." : "Login"}
               </button>
             </div>
           </form>
