@@ -24,13 +24,12 @@ export const getUserProfiles = async () => {
   }
 };
 
-
 export const swipeRight = async (user: any) => {
   try {
     const { data } = await axios.post(
       `${SERVER_BASE_API}/api/v1/match/swipe-right/${user._id}`,
       {},
-      { withCredentials: true } 
+      { withCredentials: true }
     );
     return data.msg;
   } catch (error: any) {
@@ -41,7 +40,7 @@ export const swipeRight = async (user: any) => {
 export const swipeLeft = async (user: any) => {
   try {
     const { data } = await axios.post(
-      `${SERVER_BASE_API}/api/v1/match/swipe-left/${user._id}`, 
+      `${SERVER_BASE_API}/api/v1/match/swipe-left/${user._id}`,
       {},
       { withCredentials: true }
     );
@@ -51,3 +50,14 @@ export const swipeLeft = async (user: any) => {
   }
 };
 
+export const getUserMatches = async (userId: any) => {
+  try {
+    const { data } = await axios.get(
+      `${SERVER_BASE_API}/api/v1/match/get-macthes/${userId}`,
+      { withCredentials: true }
+    );
+    return data.matches;
+  } catch (error: any) {
+    return error.response?.data?.msg;
+  }
+};
