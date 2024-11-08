@@ -19,7 +19,7 @@ const ProfileCard = () => {
 
   return (
     <div className="md:h-[90vh] h-max w-full p-4 ">
-      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-4 p-5">
         {/* Profile Info Section */}
         <div className="w-full lg:h-[45%]  flex flex-col items-start p-4">
           <h1 className="text-4xl lg:text-6xl font-extrabold p-3">
@@ -106,8 +106,7 @@ export const MyMatchesCard = ({ data }: any) => {
         <Avatar className="!w-[60px] !h-[60px] mt-2" />
       )}
       <h1 className="text-white text-center">{data.name}</h1>
-      <button className="bg-white text-black p-1 rounded-md">Remove</button>
+      {/* <button className="bg-white text-black p-1 rounded-md">Remove</button> */}
     </div>
   );
 };
-

@@ -1,8 +1,9 @@
 import { Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { getUserByID, getUserMatches } from "../../config/api";
+import { getUserByID, getUserMatches, swipeRight } from "../../config/api";
 import { useSelector } from "react-redux";
+import toast from "react-hot-toast";
 
 const UserProfileCard = () => {
   const navigate = useNavigate();
@@ -17,7 +18,6 @@ const UserProfileCard = () => {
         const userById = await getUserByID(id);
         if (userById) {
           setUser(userById);
-          // Fetch matches data based on user ID
           const matchesData = await getUserMatches(userById._id);
           setMatches(matchesData);
         }
@@ -29,6 +29,16 @@ const UserProfileCard = () => {
     fetchUserData();
   }, [id]);
 
+  const handleLikeUser = async (userId: any) => {
+    console.log("User Id ==>>> ", userId);
+    try {
+      const response = await swipeRight(user);
+      toast.success(response);
+    } catch (error) {
+      toast.error("Oops Something went wrong");
+    }
+  };
+
   if (!user) return <p>Loading...</p>;
 
   return (
@@ -39,14 +49,27 @@ const UserProfileCard = () => {
           <h1 className="text-4xl lg:text-6xl font-extrabold p-3">
             {user?.name}
           </h1>
-          <p className="w-full h-32 lg:h-[20vh]  p-4 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words ">
+          <p className="w-full h-32 lg:h-[20vh]  p-6 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words ">
             {user?.bio || ""}
           </p>
           <button
-            className="p-3 bg-black text-white rounded-md mt-4 lg:mt-auto mx-auto"
-            onClick={() => navigate("/update-profile")}
+            className={
+              "p-3 rounded-md mt-4 lg:mt-auto mx-auto bg-black text-white"
+            }
+            onClick={() => handleLikeUser(user._id)}
+            disabled={
+              current_user.likes.includes(user._id) ||
+              current_user.matches.includes(user._id)
+              // cur
+            }
           >
-            Update Your Profile
+            {current_user.matches.includes(user._id)
+              ? "Already Matched"
+              : current_user.likes.includes(user._id)
+              ? "Already Liked"
+              : current_user.dislikes.includes(user._id)
+              ? "Disliked"
+              : "Like A User"}
           </button>
         </div>
 
