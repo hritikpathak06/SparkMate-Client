@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 import { useEffect, useRef, useState } from "react";
 import MessageInput from "./MessageInput";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { SERVER_BASE_API } from "../../config/server_url";
 import VideoCall from "./VideoCall";
@@ -11,6 +11,7 @@ import Modal from "../shared/Modal";
 const ChatComponent = ({ messages, setMessages }: any) => {
   const user = useSelector((state: any) => state.auth.userData);
   const lastMessageRef: any = useRef(null);
+  const navigate = useNavigate();
 
   const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
 
@@ -42,7 +43,8 @@ const ChatComponent = ({ messages, setMessages }: any) => {
           <img
             src={profile?.image || "/public/logo.png"}
             alt=""
-            className="h-12 w-12 rounded-full"
+            className="h-12 w-12 rounded-full cursor-pointer"
+            onClick={() => navigate(`/user-profile/${id}`)}
           />
           <h2 className="text-xl font-semibold text-gray-800 ml-4">
             {profile?.name}

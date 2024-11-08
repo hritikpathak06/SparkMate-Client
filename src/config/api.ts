@@ -50,6 +50,18 @@ export const swipeLeft = async (user: any) => {
   }
 };
 
+export const getUserByID = async (userId: any) => {
+  try {
+    const { data } = await axios.get(
+      `${SERVER_BASE_API}/api/v1/user/profile/${userId}`,
+      { withCredentials: true }
+    );
+    return data.user;
+  } catch (error: any) {
+    return error.response.data.msg;
+  }
+};
+
 export const getUserMatches = async (userId: any) => {
   try {
     const { data } = await axios.get(

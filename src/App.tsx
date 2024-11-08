@@ -15,6 +15,7 @@ const ChatPage = lazy(() => import("./pages/ChatPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const UpdateProfilePage = lazy(() => import("./pages/UpdateProfile"));
 const DashboardPage = lazy(() => import("./pages/DashboardPage"));
+const UserProfilePage = lazy(() => import("./pages/UserProfile"));
 
 const App = () => {
   const dispatch = useDispatch();
@@ -74,6 +75,10 @@ const App = () => {
           <Route
             path="/profile"
             element={!isAuth ? <Navigate to="/login" /> : <ProfilePage />}
+          />
+          <Route
+            path="/user-profile/:id"
+            element={!isAuth ? <Navigate to="/login" /> : <UserProfilePage />}
           />
           <Route
             path="/dashboard/chat/:id"

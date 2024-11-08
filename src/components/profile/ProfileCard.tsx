@@ -38,16 +38,16 @@ const ProfileCard = () => {
         </div>
 
         {/* Profile Image Section */}
-        <div className="h-48 lg:h-[45%]  flex items-center justify-center">
-          <div className="p-3 w-full h-full  flex items-center justify-center">
+        <div className="h-48 lg:h-[45%] flex items-center justify-center">
+          <div className="p-3 w-full h-full flex items-center justify-center">
             {user?.image ? (
               <img
                 src={user.image}
                 alt="Profile"
-                className="max-h-full w-full h-full object-cover rounded-md"
+                className="w-36 h-36 object-cover rounded-full"
               />
             ) : (
-              <Avatar className="profile_image w-24 h-24" />
+              <Avatar className="!w-36 !h-36 object-cover" />
             )}
           </div>
         </div>
@@ -72,11 +72,11 @@ const ProfileCard = () => {
         </div>
       </div>
 
-      <div className=" bg-gradient-to-t from-pink-100 to-pink-400 h-[35vh] w-full">
+      <div className=" bg-gradient-to-t from-pink-100 to-pink-400 md:h-[35vh]  h-max w-full">
         <h1 className=" text-black text-3xl font-bold text-center">
           Your Recent Matches
         </h1>
-        <div className=" flex gap-4 w-full h-[30vh] p-2">
+        <div className=" flex flex-col lg:flex-row gap-4 w-full md:h-[30vh] h-max p-2">
           {matches
             .slice(0, 4)
             .reverse()
@@ -95,16 +95,19 @@ export default ProfileCard;
 
 export const MyMatchesCard = ({ data }: any) => {
   return (
-    <>
-      <div className=" bg-black shadow-lg rounded-md w-[25%] flex flex-col items-center gap-6 justify-center">
-        {data.image ? (
-          <img src={data.image} alt="" className="w-[80px]" />
-        ) : (
-          <Avatar className="!w-[60px] !h-[60px] mt-2" />
-        )}
-        <h1 className="text-white">{data.name}</h1>
-        <button className=" bg-white text-black p-1 rounded-md">Remove</button>
-      </div>
-    </>
+    <div className="bg-black shadow-lg rounded-md lg:w-[25%] w-full lg:p-0 p-4 flex flex-col items-center gap-4 justify-center">
+      {data.image ? (
+        <img
+          src={data.image}
+          alt={`${data.name}'s profile`}
+          className="w-[60px] h-[60px] object-cover rounded-full"
+        />
+      ) : (
+        <Avatar className="!w-[60px] !h-[60px] mt-2" />
+      )}
+      <h1 className="text-white text-center">{data.name}</h1>
+      <button className="bg-white text-black p-1 rounded-md">Remove</button>
+    </div>
   );
 };
+
