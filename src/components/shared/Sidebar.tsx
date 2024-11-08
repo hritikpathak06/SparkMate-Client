@@ -31,7 +31,8 @@ const Sidebar = ({ url }: any) => {
 
     socket.on("newMatch", (newMatchData: any) => {
       console.log("Received new match:", newMatchData);
-      setMatches((prevMatches) => [...prevMatches, newMatchData]);
+      // setMatches((prevMatches) => [...prevMatches, newMatchData]);
+      setMatches((prevMatches) => [newMatchData, ...prevMatches]);
       toast.success("WOOOOHHH! You Got The New Match🥳");
     });
   };

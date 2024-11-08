@@ -1,12 +1,11 @@
 import { Avatar } from "@mui/material";
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { getUserByID, getUserMatches, swipeRight } from "../../config/api";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
 const UserProfileCard = () => {
-  const navigate = useNavigate();
   const [matches, setMatches] = useState<any>([]);
   const [user, setUser] = useState<any>({});
   const { id } = useParams();
