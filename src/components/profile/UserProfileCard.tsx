@@ -109,7 +109,7 @@ const UserProfileCard = () => {
 
       <div className="bg-gradient-to-t from-pink-100 to-pink-400 md:h-[35vh] h-max w-full">
         <h1 className="text-black text-3xl font-bold text-center">
-          Your Recent Matches
+          User Recent Matches
         </h1>
         <div className="flex flex-col lg:flex-row gap-4 w-full md:h-[30vh] h-max p-2">
           {matches
