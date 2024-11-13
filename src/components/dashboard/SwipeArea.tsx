@@ -1,31 +1,42 @@
 import TinderCard from "react-tinder-card";
-import LOGO from "../../../public/logo.png";
+import { useState } from "react";
+import { Avatar } from "@mui/material";
 import { swipeLeft, swipeRight } from "../../config/api";
 import SwipeFeedback from "./SwipeFeedback";
-import { useState } from "react";
 
-const SwipeArea = ({ data }: any) => {
-  const [swipeFeedback, setSwipeFeedback] = useState("");
+interface User {
+  _id: string;
+  name: string;
+  age: number;
+  bio: string;
+  image?: string;
+}
 
-  const handleSwipe = async (dir: any, user: any) => {
+interface SwipeAreaProps {
+  data: User[];
+}
+
+const SwipeArea = ({ data }: SwipeAreaProps) => {
+  const [swipeFeedback, setSwipeFeedback] = useState<string>("");
+
+  const handleSwipe = async (dir: string, user: User) => {
     let feedback = "";
 
     if (dir === "right") {
       feedback = await swipeRight(user);
       setSwipeFeedback(feedback === "match" ? "matched" : "liked");
 
-      // Reload the page if there's a match
-      // if (feedback === "match") {
-      //   setTimeout(() => {
-      //     window.location.reload();
-      //   }, 2000); // Optional delay before reload
-      // }
+      if (feedback === "match") {
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000); // Optional delay before reload
+      }
     } else if (dir === "left") {
       feedback = await swipeLeft(user);
       setSwipeFeedback("passed");
     }
 
-    // Clear feedback after a short delay (if no match)
+    // Clear feedback after a short delay if not a match
     if (feedback !== "match") {
       setTimeout(() => setSwipeFeedback(""), 2000);
     }
@@ -37,8 +48,7 @@ const SwipeArea = ({ data }: any) => {
     <>
       <SwipeFeedback swipeFeedback={swipeFeedback} />
       <div className="relative w-full max-w-sm h-[28rem]">
-        {/* Swipe feedback component positioned above cards */}
-        {data.map((user: any) => (
+        {data.map((user) => (
           <TinderCard
             className="absolute shadow-none"
             key={user._id}
@@ -48,15 +58,21 @@ const SwipeArea = ({ data }: any) => {
             preventSwipe={["up", "down"]}
           >
             <div className="card bg-white w-96 h-[28rem] select-none rounded-lg overflow-hidden border border-gray-200 cursor-pointer">
-              <figure className="px-4 pt-4 h-3/4">
-                <img
-                  src={LOGO}
-                  alt={user.name}
-                  className="rounded-lg object-cover h-full pointer-events-none"
-                />
-              </figure>
+              {user.image ? (
+                <figure className="px-4 pt-4 h-4/4 rounded-full">
+                  <img
+                    src={user.image}
+                    alt={user.name}
+                    className="rounded-full object-cover h-full pointer-events-none"
+                  />
+                </figure>
+              ) : (
+                <div className="flex justify-center items-center px-4 pt-4 h-4/4">
+                  <Avatar className="!h-40 !w-40" />
+                </div>
+              )}
               <div className="card-body bg-gradient-to-b from-white to-pink-50">
-                <h2 className="card-title text-2xl text-gray-800 text-center">
+                <h2 className="card-title text-3xl text-center text-gray-800 mx-auto">
                   {user.name}, {user.age}
                 </h2>
                 <p className="text-gray-600 text-center">

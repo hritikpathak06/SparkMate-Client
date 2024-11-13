@@ -7,6 +7,7 @@ import { SERVER_BASE_API } from "../../config/server_url";
 import VideoCall from "./VideoCall";
 import { FcVideoCall } from "react-icons/fc";
 import Modal from "../shared/Modal";
+import { Avatar } from "@mui/material";
 
 const ChatComponent = ({ messages, setMessages }: any) => {
   const user = useSelector((state: any) => state.auth.userData);
@@ -40,12 +41,16 @@ const ChatComponent = ({ messages, setMessages }: any) => {
     <div className="bg-white w-full md:h-[85vh] h-[87vh] max-h-[95vh] flex flex-col">
       <div className="flex items-center justify-between mb-4 bg-slate-300 shadow-lg p-3">
         <div className=" flex items-center">
-          <img
-            src={profile?.image || "/public/logo.png"}
-            alt=""
-            className="h-12 w-12 rounded-full cursor-pointer"
-            onClick={() => navigate(`/user-profile/${id}`)}
-          />
+          {profile?.img ? (
+            <img
+              src={profile?.image}
+              alt=""
+              className="h-12 w-12 rounded-full cursor-pointer"
+              onClick={() => navigate(`/user-profile/${id}`)}
+            />
+          ) : (
+            <Avatar className=" h-36 w-36 cursor-pointer" onClick={() => navigate(`/user-profile/${id}`)}/>
+          )}
           <h2 className="text-xl font-semibold text-gray-800 ml-4">
             {profile?.name}
           </h2>

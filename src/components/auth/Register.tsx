@@ -44,13 +44,13 @@ const Register = () => {
 
   return (
     <>
-      <div className=" h-full w-full  flex flex-col items-center justify-center">
+      <div className=" md:h-full h-max w-full overflow-auto  flex flex-col items-center justify-center">
         <div className=" w-full  mx-auto p-6">
           <h1 className=" text-3xl font-extrabold mb-5">
             Welcome Back, Register Here👋
           </h1>
           <form onSubmit={handleRegister}>
-            <div className=" w-full gap-3 mb-4 flex items-center">
+            <div className=" w-full gap-3 mb-4 md:flex-row flex-col flex items-center">
               <div className=" flex flex-col w-full gap-3 mb-4">
                 <label htmlFor="name" className=" text-1xl">
                   Enter Your Name
@@ -76,7 +76,7 @@ const Register = () => {
               </div>
             </div>
 
-            <div className=" w-full gap-3 mb-4 flex items-center">
+            <div className=" w-full gap-3 mb-4 flex md:flex-row flex-col items-center">
               <div className=" flex flex-col w-full gap-3 mb-4">
                 <label htmlFor="email" className=" text-1xl">
                   Enter Your Password
@@ -118,7 +118,7 @@ const Register = () => {
               />
             </div>
 
-            <div className=" w-full gap-3 mb-4 flex items-center">
+            <div className=" w-full gap-3 mb-4 flex md:flex-row flex-col items-center">
               <div className=" flex flex-col w-full gap-3 mb-4">
                 <label htmlFor="email" className=" text-1xl">
                   Enter Your Age

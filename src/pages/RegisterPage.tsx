@@ -3,11 +3,11 @@ import Register from "../components/auth/Register";
 const RegisterPage = () => {
   return (
     <>
-      <div className=" bg-slate-200 h-screen w-full flex">
-        <div className=" w-1/2 h-full">
+      <div className=" bg-slate-200 md:h-screen h-max w-full flex">
+        <div className="md:w-1/2 w-full h-full md:p-0 p-4">
           <Register />
         </div>
-        <div className=" bg-red-400 w-1/2 h-full">
+        <div className=" bg-red-400 md:block hidden w-1/2 md:h-full h-max">
           <img
             src="./login.png"
             alt=""

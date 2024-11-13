@@ -19,58 +19,55 @@ const ProfileCard = () => {
 
   return (
     <div className="md:h-[90vh] h-max w-full p-4 ">
-      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-4 p-5">
-        {/* Profile Info Section */}
-        <div className="w-full lg:h-[45%]  flex flex-col items-start p-4">
-          <h1 className="text-4xl lg:text-6xl font-extrabold p-3">
-            {user?.name}
-          </h1>
+      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-6 p-6 bg-gradient-to-r from-purple-500 to-pink-500 rounded-lg shadow-lg">
+  {/* Profile Info Section */}
+  <div className="bg-white w-full h-full flex flex-col  items-start p-6 rounded-lg shadow-md">
+    <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-800 mb-3">
+      {user?.name}
+    </h1>
+    <p className="w-full h-32 lg:h-[20vh] p-4 text-gray-700 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words border border-gray-200 rounded-md">
+      {user?.bio || "No bio available"}
+    </p>
+    <button
+      className="mt-4 lg:mt-auto px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white font-semibold rounded-md hover:shadow-lg transform hover:scale-105 transition-all duration-200 ease-in-out mx-auto"
+      onClick={() => navigate("/update-profile")}
+    >
+      Update Your Profile
+    </button>
+  </div>
 
-          <p className="w-full h-32 lg:h-[20vh]  p-2 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words">
-            {user?.bio || ""}
-          </p>
-          <button
-            className="p-3 bg-black text-white rounded-md mt-4 lg:mt-auto mx-auto"
-            onClick={() => navigate("/update-profile")}
-          >
-            Update Your Profile
-          </button>
-        </div>
+  {/* Profile Image Section */}
+  <div className="flex items-center justify-center h-48 lg:h-full">
+    <div className="p-4 w-full h-full flex items-center justify-center bg-white rounded-lg shadow-md">
+      {user?.image ? (
+        <img
+          src={user.image}
+          alt="Profile"
+          className="w-44 h-44 object-cover rounded-full border-4 border-purple-500"
+        />
+      ) : (
+        <Avatar className="!w-44 !h-44 object-cover border-4 border-purple-500" />
+      )}
+    </div>
+  </div>
 
-        {/* Profile Image Section */}
-        <div className="h-48 lg:h-[45%] flex items-center justify-center">
-          <div className="p-3 w-full h-full flex items-center justify-center">
-            {user?.image ? (
-              <img
-                src={user.image}
-                alt="Profile"
-                className="w-36 h-36 object-cover rounded-full"
-              />
-            ) : (
-              <Avatar className="!w-36 !h-36 object-cover" />
-            )}
-          </div>
-        </div>
+  {/* Stats Section */}
+  <div className="flex flex-col items-center justify-around p-6 bg-white rounded-lg shadow-md">
+    <div className="flex flex-col items-center">
+      <h1 className="text-4xl lg:text-5xl font-extrabold text-pink-600">{user?.likes.length}</h1>
+      <span className="text-lg text-gray-600">Likes</span>
+    </div>
+    <div className="flex items-center gap-2 mt-4">
+      <span className="text-2xl lg:text-3xl font-bold text-gray-800">Age:</span>
+      <span className="text-2xl lg:text-3xl font-semibold text-pink-600">{user?.age}</span>
+    </div>
+    <div className="flex flex-col items-center mt-4">
+      <h1 className="text-4xl lg:text-5xl font-extrabold text-purple-600">{user?.dislikes.length}</h1>
+      <span className="text-lg text-gray-600">Dislikes</span>
+    </div>
+  </div>
+</div>
 
-        {/* Stats Section */}
-        <div className=" flex flex-col items-center justify-center gap-5 py-4 lg:h-[45%]">
-          <div>
-            <h1 className="text-center text-4xl lg:text-6xl font-extrabold">
-              {user?.likes.length}
-            </h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl lg:text-4xl font-bold">Age:</h1>
-            <h1 className="text-2xl lg:text-4xl font-bold">{user?.age}</h1>
-          </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl lg:text-4xl font-bold">Dislikes:</h1>
-            <h1 className="text-2xl lg:text-4xl font-bold">
-              {user?.dislikes.length}
-            </h1>
-          </div>
-        </div>
-      </div>
 
       <div className=" bg-gradient-to-t from-pink-100 to-pink-400 md:h-[35vh]  h-max w-full">
         <h1 className=" text-black text-3xl font-bold text-center">

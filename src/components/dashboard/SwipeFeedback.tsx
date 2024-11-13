@@ -1,6 +1,6 @@
 const getFeedbackStyle = (swipeFeedback: any) => {
   if (swipeFeedback === "liked") return "text-green-500";
-  if (swipeFeedback === "passed") return "text-red-500";
+  if (swipeFeedback === "passed") return "text-blue-500";
   if (swipeFeedback === "matched") return "text-pink-500";
   return "";
 };

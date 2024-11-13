@@ -70,26 +70,26 @@ const UpdateProfile = () => {
 
   return (
     <>
-      <div className=" bg-slate-200 h-screen w-full flex">
-        <div className="bg-red-400 w-1/2 h-full flex items-center justify-center">
+      <div className=" bg-slate-200 md:h-screen h-max w-full gap-10 md:flex-row flex-col flex">
+        <div className="bg-red-400 md:w-1/2 w-full md:h-full md:max-h-screen max-h-[300px] flex items-center justify-center md:p-0 p-2">
           {image ? (
             <img
               src={image || "/logo.png"}
               alt=""
-              className=" w-[70%] h-[70%] rounded-full border-5 "
+              className=" md:w-[70%] md:h-[70%] h-[250px] w-[250px] rounded-full border-5 "
             />
           ) : (
-            <Avatar />
+            <Avatar className=" md:!h-[250px] md:!w-[300px] !h-[200px] !w-[200px]" />
           )}
         </div>
-        <div className="w-1/2 h-full">
+        <div className="md:w-1/2 w-full h-full">
           <div className=" h-full w-full  flex flex-col items-center justify-center">
             <div className=" w-full  mx-auto p-6">
               <h1 className=" text-3xl font-extrabold mb-5">
                 Update Your Profile😊
               </h1>
               <form onSubmit={handleUpdateProfile}>
-                <div className=" w-full gap-3 mb-4 flex items-center">
+                <div className=" w-full gap-3 mb-4 flex  md:flex-row flex-col items-center">
                   <div className=" flex flex-col w-full gap-3 mb-4">
                     <label htmlFor="name" className=" text-1xl">
                       Enter Your Name
@@ -127,7 +127,7 @@ const UpdateProfile = () => {
                   />
                 </div>
 
-                <div className=" w-full gap-3 mb-4 flex items-center">
+                <div className=" w-full gap-3 mb-4 md:flex-row flex-col flex items-center">
                   <div className=" flex flex-col w-full gap-3 mb-4">
                     <label htmlFor="email" className=" text-1xl">
                       Your Age
@@ -157,7 +157,7 @@ const UpdateProfile = () => {
                   </div>
                 </div>
 
-                <div className=" w-full gap-3 mb-4 flex items-center">
+                <div className=" w-full gap-3 mb-4 md:flex-row flex-col flex items-center">
                   <div className=" flex flex-col w-full gap-3 mb-4">
                     <label htmlFor="email" className=" text-1xl">
                       Your Gender Preference
@@ -188,15 +188,6 @@ const UpdateProfile = () => {
                     />
                   </div>
                 </div>
-
-                <p>
-                  Already have an account ?{" "}
-                  <span>
-                    <a href="/login" className=" text-blue-500">
-                      Login
-                    </a>
-                  </span>
-                </p>
 
                 <div className=" mt-5">
                   <button

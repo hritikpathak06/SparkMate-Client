@@ -42,24 +42,29 @@ const UserProfileCard = () => {
 
   return (
     <div className="md:h-[90vh] h-max w-full p-4">
-      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-4">
+      <div className="grid grid-cols-1 lg:grid-cols-3 w-full lg:h-3/5 gap-6 bg-gradient-to-br from-indigo-50 to-purple-100 p-6 rounded-lg shadow-lg">
         {/* Profile Info Section */}
-        <div className="w-full lg:h-[45%] flex flex-col items-start p-4">
-          <h1 className="text-4xl lg:text-6xl font-extrabold p-3">
+        <div className="bg-white w-full h-full flex flex-col items-start p-6 rounded-lg shadow-md">
+          <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-800 mb-3">
             {user?.name}
           </h1>
-          <p className="w-full h-32 lg:h-[20vh]  p-6 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words ">
-            {user?.bio || ""}
+          <p className="w-full h-32 lg:h-[20vh] p-4 text-gray-700 overflow-y-auto overflow-x-hidden whitespace-pre-wrap break-words border border-gray-200 rounded-md">
+            {user?.bio || "No bio available"}
           </p>
           <button
-            className={
-              "p-3 rounded-md mt-4 lg:mt-auto mx-auto bg-black text-white"
-            }
+            className={`mt-4 lg:mt-auto px-6 py-3 rounded-md font-semibold text-white transition-transform transform hover:scale-105 ${
+              current_user.matches.includes(user._id)
+                ? "bg-green-500 cursor-default"
+                : current_user.likes.includes(user._id)
+                ? "bg-blue-500 cursor-not-allowed"
+                : current_user.dislikes.includes(user._id)
+                ? "bg-red-500 cursor-default"
+                : "bg-indigo-500 hover:bg-indigo-600"
+            }`}
             onClick={() => handleLikeUser(user._id)}
             disabled={
               current_user.likes.includes(user._id) ||
               current_user.matches.includes(user._id)
-              // cur
             }
           >
             {current_user.matches.includes(user._id)
@@ -68,41 +73,44 @@ const UserProfileCard = () => {
               ? "Already Liked"
               : current_user.dislikes.includes(user._id)
               ? "Disliked"
-              : "Like A User"}
+              : "Like User"}
           </button>
         </div>
 
         {/* Profile Image Section */}
-        <div className="h-48 lg:h-[45%] flex items-center justify-center">
-          <div className="p-3 w-full h-full flex items-center justify-center">
-            {user?.image ? (
-              <img
-                src={user.image}
-                alt="Profile"
-                className="w-36 h-36 object-cover rounded-full"
-              />
-            ) : (
-              <Avatar className="!w-36 !h-36 object-cover" />
-            )}
-          </div>
+        <div className="flex items-center justify-center h-48 lg:h-full bg-white rounded-lg shadow-md p-4">
+          {user?.image ? (
+            <img
+              src={user.image}
+              alt="Profile"
+              className="w-44 h-44 object-cover rounded-full border-4 border-indigo-400"
+            />
+          ) : (
+            <Avatar className="!w-44 !h-44 object-cover border-4 border-indigo-400" />
+          )}
         </div>
 
         {/* Stats Section */}
-        <div className="flex flex-col items-center justify-center gap-5 py-4 lg:h-[45%]">
-          <div>
-            <h1 className="text-center text-4xl lg:text-6xl font-extrabold">
+        <div className="flex flex-col items-center justify-around p-6 bg-white rounded-lg shadow-md">
+          <div className="flex flex-col items-center">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-indigo-600">
               {user?.likes?.length}
             </h1>
+            <span className="text-lg text-gray-600">Likes</span>
           </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl lg:text-4xl font-bold">Age:</h1>
-            <h1 className="text-2xl lg:text-4xl font-bold">{user?.age}</h1>
+          <div className="flex items-center gap-2 mt-4">
+            <span className="text-2xl lg:text-3xl font-bold text-gray-800">
+              Age:
+            </span>
+            <span className="text-2xl lg:text-3xl font-semibold text-indigo-600">
+              {user?.age}
+            </span>
           </div>
-          <div className="flex items-center gap-2">
-            <h1 className="text-2xl lg:text-4xl font-bold">Dislikes:</h1>
-            <h1 className="text-2xl lg:text-4xl font-bold">
+          <div className="flex flex-col items-center mt-4">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-red-500">
               {user?.dislikes?.length}
             </h1>
+            <span className="text-lg text-gray-600">Dislikes</span>
           </div>
         </div>
       </div>
